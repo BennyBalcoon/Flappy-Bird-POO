@@ -43,17 +43,18 @@ class Obstacle {
 
 const pipeTop = new Obstacle(200, -100);
 const pipeDown = new Obstacle(200, 250);
-const floor = new Obstacle(0, cvs.height-118);
+const floor = new Obstacle(0, cvs.height-118); // 118 = floor.height
+
 
 function draw() {
-    
+  
     ctx.drawImage(bg, 0, 0);
     ctx.drawImage(bg, 288, 0);
     ctx.drawImage(bird, flappy.x, flappy.y);
     ctx.drawImage(pipeNorth, pipeTop.x, pipeTop.y);
     ctx.drawImage(pipeSouth, pipeDown.x, pipeDown.y);
     ctx.drawImage(fg, floor.x, floor.y);
-    ctx.drawImage(fg, floor.x+306, floor.y);
+    ctx.drawImage(fg, floor.x+306, floor.y); // 306 = fg.width
 
     flappy.y += gravity;
 
