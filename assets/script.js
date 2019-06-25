@@ -13,6 +13,10 @@ pipeNorth.src = "assets/pipeNorth.png";
 let pipeSouth = new Image();
 pipeSouth.src = "assets/pipeSouth.png";
 
+let fg = new Image();
+fg.src = "assets/fg.png"
+
+let gravity = 1;
 
 class Bird {
     constructor(x, y) {
@@ -24,10 +28,11 @@ class Bird {
     }
 }
 
-const flappy = new Bird(20, 20);
+const flappy = new Bird(20, 50);
 document.addEventListener("keydown", function() {
     flappy.moveUp();
 })
+
 
 class Obstacle {
     constructor(x, y) {
@@ -36,5 +41,23 @@ class Obstacle {
     }
 }
 
-const pipeTop = new Obstacle();
-const pipeDown = new Obstacle();
+const pipeTop = new Obstacle(200, -100);
+const pipeDown = new Obstacle(200, 250);
+const floor = new Obstacle(0, cvs.height-118);
+
+function draw() {
+    
+    ctx.drawImage(bg, 0, 0);
+    ctx.drawImage(bg, 288, 0);
+    ctx.drawImage(bird, flappy.x, flappy.y);
+    ctx.drawImage(pipeNorth, pipeTop.x, pipeTop.y);
+    ctx.drawImage(pipeSouth, pipeDown.x, pipeDown.y);
+    ctx.drawImage(fg, floor.x, floor.y);
+    ctx.drawImage(fg, floor.x+306, floor.y);
+
+    flappy.y += gravity;
+
+    requestAnimationFrame(draw);
+}
+
+draw();
