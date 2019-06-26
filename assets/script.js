@@ -17,6 +17,8 @@ let fg = new Image();
 fg.src = "assets/fg.png"
 
 let gravity = 1;
+let gap = 80;
+let constant = pipeNorth.height + gap;
 
 class Bird {
     constructor(x, y) {
@@ -28,11 +30,10 @@ class Bird {
     }
 }
 
-const flappy = new Bird(20, 50);
+const flappy = new Bird(100, 100);
 document.addEventListener("keydown", function() {
     flappy.moveUp();
 })
-
 
 class Obstacle {
     constructor(x, y) {
@@ -41,18 +42,34 @@ class Obstacle {
     }
 }
 
-const pipeTop = new Obstacle(200, -100);
-const pipeDown = new Obstacle(200, 250);
+const pipeTop = new Obstacle(100, 0);
+const pipeDown = new Obstacle(100, 0+constant);
 const floor = new Obstacle(0, cvs.height-118); // 118 = floor.height
 
+let pipes = [];
+pipes[0] = {
+    x: cvs.width,
+    y: 0
+}
 
 function draw() {
   
     ctx.drawImage(bg, 0, 0);
-    ctx.drawImage(bg, 288, 0);
+    ctx.drawImage(bg, 288, 0); // 288 = bg.width
     ctx.drawImage(bird, flappy.x, flappy.y);
-    ctx.drawImage(pipeNorth, pipeTop.x, pipeTop.y);
-    ctx.drawImage(pipeSouth, pipeDown.x, pipeDown.y);
+
+    for (let i = 0; i < pipes.length; i++) {
+        ctx.drawImage(pipeNorth, pipes[i].x, pipes[i].y);
+        ctx.drawImage(pipeSouth, pipes[i].x, pipes[i].y + constant);
+        pipes[i].x--;
+
+        if (pipes[i].x === 100) {
+            pipes.push({
+                x: cvs.width,
+                y: Math.floor((Math.random()*pipeNorth.height)-pipeNorth.height)
+            })
+        }
+    }
     ctx.drawImage(fg, floor.x, floor.y);
     ctx.drawImage(fg, floor.x+306, floor.y); // 306 = fg.width
 
